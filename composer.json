@@ -7,7 +7,8 @@
 	"require": {
 		"laravel/framework": "5.0.*",
 		"behat/behat": "2.5.*",
-		"guzzle/guzzle": "2.5.*"
+		"guzzle/guzzle": "2.5.*",
+		"hamcrest/hamcrest-php": "1.2.2"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
