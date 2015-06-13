@@ -6,8 +6,8 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "5.0.*",
-		"behat/behat": "2.5.*",
-		"guzzle/guzzle": "2.5.*",
+		"behat/behat": "3.0.15",
+		"guzzle/guzzle": "3.9.3",
 		"hamcrest/hamcrest-php": "1.2.2"
 	},
 	"require-dev": {
