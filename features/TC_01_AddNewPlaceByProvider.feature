@@ -11,7 +11,7 @@ Feature: Add a new place in Sonar
     When I perform a request with the provider id "100473940700" to add the place
     Then I get a "200 OK" response status code
     And the response has an "id" property
-    And the "id" property is alphanumeric
+    And the "id" property is a "string" type
 
   @sanity @foursquare_e2e
   Scenario: Add new place in Foursquare
@@ -20,7 +20,7 @@ Feature: Add a new place in Sonar
     When I perform a request with the provider id "4b7755f5f964a5200f932ee3" to add the place
     Then I get a "200 OK" response status code
     And the response has an "id" property
-    And the "id" property is alphanumeric
+    And the "id" property is a "string" type
 
   Scenario: Attempt to add new place in Twitter
     Given I want to add a new "place" in sonar

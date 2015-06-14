@@ -1,8 +1,6 @@
 <?php
 
 use Behat\Behat\Context\BehatContext;
-use Symfony\Component\Yaml\Yaml;
-use Hamcrest\Matcher;
 
 require_once 'RequestContext.php';
 
@@ -12,64 +10,73 @@ class StepsContext extends BehatContext
 
     public function __construct(array $parameters)
     {
-        $_requests_manager = new RequestContext($parameters);
+        $this->$_requests_manager = new RequestContext($parameters);
     }
 
     /**
      * @Given /^I want to add a new "([^"]*)" in sonar$/
      */
-    public function iWantToAddANewInSonar($arg1)
+    public function addEntityInSonar($entity_name)
     {
-
+        $this->$_requests_manager->addAnEntityByName($entity_name);
     }
 
     /**
      * @Given /^the provider name is "([^"]*)"$/
      */
-    public function theProviderNameIs($arg1)
+    public function theProviderNameIs($provider_name)
     {
-        throw new PendingException();
+        $this->$_requests_manager->addProviderToPathUrl($provider_name);
     }
 
     /**
      * @When /^I perform a request with the provider id "([^"]*)" to add the place$/
+     * @When /^I perform a request with the provider id "([^"]*)" to get the place's information$/
+     * @When /^I perform a request with the provider id "([^"]*)" to delete the place$/
+     *
      */
-    public function iPerformARequestWithTheProviderIdToAddThePlace($arg1)
+    public function iPerformARequestWithTheProviderId($providerPlaceId)
     {
-        throw new PendingException();
+        $this->$_requests_manager->executeProviderRequest($providerPlaceId);
     }
 
     /**
      * @Then /^I get a "([^"]*)" response status code$/
      */
-    public function iGetAResponseStatusCode($arg1)
+    public function iGetAResponseStatusCode($response_code)
     {
-        throw new PendingException();
+        $actual_response = $this->$_requests_manager->getResponseCodeStatus();
+        assertEquals($response_code, $actual_response,
+            "The response is not the same, should be ".$response_code." but is ".$actual_response);
     }
 
     /**
-     * @Given /^the response has an "([^"]*)" property$/
-     * @Given /^the response has a "([^"]*)" property$/
+     * @Then /^the response has an "([^"]*)" property$/
+     * @Then /^the response has a "([^"]*)" property$/
      */
-    public function theResponseHasAnProperty($arg1)
+    public function theResponseHasAnProperty($property_name)
     {
-        throw new PendingException();
+        assertThat($this->$_requests_manager->isPropertyNameInResponse($property_name),
+            "The property name ".$property_name." is not present in the response");
     }
 
     /**
-     * @Given /^the "([^"]*)" property is alphanumeric$/
+     * @Given /^the "([^"]*)" property is a "([^"]*)" type$/
      */
-    public function thePropertyIsAlphanumeric($arg1)
+    public function thePropertyIsAType($property_name, $type)
     {
-        throw new PendingException();
+        assertThat($this->$_requests_manager->checkPropertyType($property_name, $type),
+            "The property name ".$property_name." is not ".$type." type");
     }
 
     /**
-     * @Given /^the error message returned should be "([^"]*)"$/
+     * @Then /^the error message returned should be "([^"]*)"$/
      */
-    public function theErrorMessageReturnedShouldBe($arg1)
+    public function theErrorMessageReturnedShouldBe($response_code)
     {
-        throw new PendingException();
+        $actual_response = $this->_requests_manager->getResponseCodeStatus();
+        assertEquals($response_code, $actual_response,
+            "The response code is incorrect. It should be ".$response_code." but is ".$actual_response);
     }
 
     /**
@@ -77,47 +84,31 @@ class StepsContext extends BehatContext
      */
     public function iPerformARequestWithoutSpecifyingAProviderId()
     {
-        throw new PendingException();
+        $this->$_requests_manager->executeProviderRequest("");
     }
 
     /**
      * @Given /^I want to find a "([^"]*)"$/
      */
-    public function iWantToFindA($arg1)
+    public function iWantToFindA($entityName)
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @When /^I perform a request with the provider id "([^"]*)" to get the place's information$/
-     */
-    public function iPerformARequestWithTheProviderIdToGetThePlaceSInformation($arg1)
-    {
-        throw new PendingException();
+        $this->$_requests_manager->getAnEntityByName($entityName);
     }
 
     /**
      * @Given /^I want to remove a "([^"]*)" in sonar$/
      */
-    public function iWantToRemoveAInSonar($arg1)
+    public function iWantToRemoveAInSonar($entityName)
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @When /^I perform a request with the provider id "([^"]*)" to delete the place$/
-     */
-    public function iPerformARequestWithTheProviderIdToDeleteThePlace($arg1)
-    {
-        throw new PendingException();
+        $this->$_requests_manager->removeAnEntityByName($entityName);
     }
 
     /**
      * @When /^I perform a request with the UUID "([^"]*)" to get the place's information$/
      */
-    public function iPerformARequestWithTheUUIDToGetThePlaceSInformation($arg1)
+    public function iPerformARequestWithTheUUIDToGetThePlaceSInformation($sonarPlaceId)
     {
-        throw new PendingException();
+        $this->_requests_manager->executeUuidRequest($sonarPlaceId);
     }
 
     /**
@@ -127,4 +118,5 @@ class StepsContext extends BehatContext
     {
         throw new PendingException();
     }
+
 }

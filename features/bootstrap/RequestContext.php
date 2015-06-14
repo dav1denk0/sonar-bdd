@@ -12,6 +12,7 @@ class RequestContext
     private $_response = null;
     private $_requestUrl = null;
     private $_parameters = array();
+    private $_pathUrl = "";
 
     /**
      * Initializes Guzzle service context.
@@ -52,15 +53,44 @@ class RequestContext
         $this->_restObjectMethod = 'delete';
     }
 
+    public function addProviderToPathUrl($provider_name)
+    {
+        $this->$_pathUrl = "";
+        switch(mb_strtoupper($provider_name)) {
+            case 'FACEBOOK':
+                $this->$_pathUrl = $this->getParameter('facebook_provider_url');
+                break;
+            case 'FOURSQUARE':
+                $this->$_pathUrl = $this->getParameter('foursquare_provider_url');
+                break;
+            case 'SONAR':
+                $this->$_pathUrl = $this->getParameter('sonar_uuid_url');
+                break;
+            default:
+                throw new Exception("The provider name ".$provider_name." is not defined");
+        }
+    }
+
     public function addPropertyToObject($propertyName, $propertyValue)
     {
         $this->_restObject->$propertyName = $propertyValue;
     }
 
+    public function executeProviderRequest($providerPlaceId)
+    {
+        $this->executeRequest($this->$pathUrl.$providerPlaceId);
+    }
+
+    public function executeUuidRequest($sonarPlaceId)
+    {
+        $this->executeRequest($this->$pathUrl.$sonarPlaceId);
+    }
+
     public function executeRequest($path_url)
     {
         $baseUrl = $this->getParameter('base_url');
-        $this->_requestUrl = $baseUrl.$path_url;
+        $basePath = $this->getParameter('base_path');
+        $this->_requestUrl = $baseUrl.$basePath.$path_url;
         $response = null;
 
         switch (strtoupper($this->_restObjectMethod)) {
@@ -122,6 +152,20 @@ class RequestContext
         }
     }
 
+    public function isPropertyNameInResponse($propertyName)
+    {
+        $data = json_decode($this->_response->getBody(true));
+
+        if (!empty($data)) {
+            if (!isset($data->$propertyName)) {
+                throw new Exception("Property '".$propertyName."' is not set!\n");
+            }
+            return true;
+        } else {
+            throw new Exception("Response was not JSON\n" . $this->_response->getBody(true));
+        }
+    }
+
     public function checkPropertyType($propertyName,$typeString)
     {
         $data = json_decode($this->_response->getBody(true));
@@ -134,11 +178,11 @@ class RequestContext
             switch (strtolower($typeString)) {
                 case 'string':
                     if (!is_string($data->$propertyName)) {
-                        throw new Exception("Property '".$propertyName."' is not a string type: \n");
+                        return false;
                     }
                     break;
             }
-
+            return true;
         } else {
             throw new Exception("Response was not JSON\n" . $this->_response->getBody(true));
         }
@@ -150,6 +194,11 @@ class RequestContext
             throw new \Exception('HTTP code does not match '.$httpStatus.
                 ' (actual: '.$this->_response->getStatusCode().')');
         }
+    }
+
+    public function getResponseCodeStatus()
+    {
+        return (string)$this->_response->getStatusCode();
     }
 
     public function echoLastResponse()
