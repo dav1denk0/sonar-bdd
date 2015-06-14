@@ -1,0 +1,4 @@
+default:
+  context:
+    parameters:
+        base_url: http://uk9c0jvb9f6nvxvhursp.olapic.com
