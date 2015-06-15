@@ -10,6 +10,7 @@ Feature: Get places in Sonar by provider id
     And the provider name is "Facebook"
     When I perform a request with the provider id "100473940700" to get the place's information
     Then I get a "200 OK" response status code
+    And the response is a JSON object
     And the response has an "id" property
     And the "id" property is a "string" type
 
@@ -19,6 +20,7 @@ Feature: Get places in Sonar by provider id
     And the provider name is "Foursquare"
     When I perform a request with the provider id "4b7755f5f964a5200f932ee3" to get the place's information
     Then I get a "200 OK" response status code
+    And the response is a JSON object
     And the response has an "id" property
     And the "id" property is a "string" type
 
@@ -27,4 +29,5 @@ Feature: Get places in Sonar by provider id
     And the provider name is "Twitter"
     When I perform a request with the provider id "4b7755f5f964a5200f932ee3" to get the place's information
     Then I get a "404 Not Found" response status code
+    And the response is a JSON object
     And the error message returned should be "Unknown provider with name: twitter"

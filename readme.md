@@ -21,3 +21,31 @@ Thank you for considering contributing to the Laravel framework! The contributio
 ### License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+## Sonar BDD Project
+
+Sonar BDD is a project with testing purpose over the Sonar Service Project. Sonar is a service to store and normalize information about places from different providers.
+
+In this case, we're using Behat to test the Sonar features in a Behavior Driven Development way. Also, frameworks like Laravel, Composer and Guzzle are also used in this project.
+This project was developed in a trial version of PhpStorm 8 IDE under Windows OS. And the PHP language version is the following:
+
+    PHP 5.5.25 (cli) (built: May 13 2015 19:58:58)
+    Copyright (c) 1997-2015 The PHP Group
+    Zend Engine v2.5.0, Copyright (c) 1998-2015 Zend Technologies
+
+## Project Setup
+
+First of all open a command window and go to the project root folder. We need to install Composer by running in a command window:
+
+    curl -s http://getcomposer.org/installer | php
+
+Then, we already had a composer.json file in our project root with all the dependencies that we need to get the Sonar BDD project working.
+To install all dependencies (behat, laravel, guzzle, etc.) we need to execute the following command:
+
+    php composer.phar install
+    
+If any change was made in composer.json file we need to 'update' composer to take changes and to download new dependencies.
+
+    composer update
+    
+Please, if you have any problems with the previous command and your dependencies are not in /vendor folder, try to execute the previous composer update command

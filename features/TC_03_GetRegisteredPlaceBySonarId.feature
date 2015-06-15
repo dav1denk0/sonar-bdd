@@ -9,14 +9,13 @@ Feature: Get registered places in Sonar by Sonar place id (UUID)
     Given I want to find a "place"
     When I perform a request with the UUID "UUID" to get the place's information
     Then I get a "200 OK" response status code
+    And the response is a JSON object
     And the response has a "provider_name" property
     And the "provider_name" property in the response is the same as "Provider"
 
     Examples:
     | UUID                                  | Provider    |
-    @facebook_e2e
     | 99c7e60f-e235-4c34-9761-3cf5747f2b1a  | Facebook    |
-    @foursquare_e2e
     | 07678a57-3b10-4401-bf42-c9d1dc5a77ea  | Foursquare  |
 
 
@@ -24,4 +23,5 @@ Feature: Get registered places in Sonar by Sonar place id (UUID)
     Given I want to find a "place"
     When I perform a request with the UUID "UUID" to get the place's information
     Then I get a "404 Not Found" response status code
+    And the response is a JSON object
     And the error message returned should be "Invalid UUID string"

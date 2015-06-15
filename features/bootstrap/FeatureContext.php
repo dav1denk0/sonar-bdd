@@ -14,6 +14,7 @@ require_once 'StepsContext.php';
  */
 class FeatureContext extends BehatContext
 {
+    private $requestManager;
     /**
      * Initializes context.
      * Every scenario gets it's own context object.
@@ -22,7 +23,6 @@ class FeatureContext extends BehatContext
      */
     public function __construct(array $parameters)
     {
-        // Initialize your context here
         $this->useContext('StepsContext', new StepsContext($parameters));
     }
 }

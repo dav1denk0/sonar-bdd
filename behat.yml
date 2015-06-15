@@ -3,6 +3,6 @@ default:
     parameters:
         base_url: http://uk9c0jvb9f6nvxvhursp.olapic.com
         base_path: /v1/places
-        facebook_provider_url: /facebook
-        foursquare_provider_url: /foursquare
-        sonar_uuid_url: /sonar
+        facebook_provider_url: /facebook/
+        foursquare_provider_url: /foursquare/
+        sonar_uuid_url: /sonar/

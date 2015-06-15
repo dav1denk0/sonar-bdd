@@ -1,6 +1,6 @@
 <?php
 
-use Symfony\Component\Yaml\Yaml;
+use Guzzle\Http\Exception\BadResponseException;
 
 class RequestContext
 {
@@ -55,19 +55,19 @@ class RequestContext
 
     public function addProviderToPathUrl($provider_name)
     {
-        $this->$_pathUrl = "";
+        $this->_pathUrl = "";
         switch(mb_strtoupper($provider_name)) {
             case 'FACEBOOK':
-                $this->$_pathUrl = $this->getParameter('facebook_provider_url');
+                $this->_pathUrl = $this->getParameter('facebook_provider_url');
                 break;
             case 'FOURSQUARE':
-                $this->$_pathUrl = $this->getParameter('foursquare_provider_url');
+                $this->_pathUrl = $this->getParameter('foursquare_provider_url');
                 break;
             case 'SONAR':
-                $this->$_pathUrl = $this->getParameter('sonar_uuid_url');
+                $this->_pathUrl = $this->getParameter('sonar_uuid_url');
                 break;
             default:
-                throw new Exception("The provider name ".$provider_name." is not defined");
+                $this->_pathUrl = "/".$provider_name."/";
         }
     }
 
@@ -78,12 +78,12 @@ class RequestContext
 
     public function executeProviderRequest($providerPlaceId)
     {
-        $this->executeRequest($this->$pathUrl.$providerPlaceId);
+        $this->executeRequest($this->_pathUrl.$providerPlaceId);
     }
 
     public function executeUuidRequest($sonarPlaceId)
     {
-        $this->executeRequest($this->$pathUrl.$sonarPlaceId);
+        $this->executeRequest($this->_pathUrl.$sonarPlaceId);
     }
 
     public function executeRequest($path_url)
@@ -92,26 +92,31 @@ class RequestContext
         $basePath = $this->getParameter('base_path');
         $this->_requestUrl = $baseUrl.$basePath.$path_url;
         $response = null;
-
-        switch (strtoupper($this->_restObjectMethod)) {
-            case 'GET':
-                $response = $this->_client
-                    ->get($this->_requestUrl.'?'.http_build_query((array)$this->_restObject))
-                    ->send();
-                break;
-            case 'PUT':
-                $postFields = (array)$this->_restObject;
-                $response = $this->_client
-                    ->post($this->_requestUrl,null,$postFields)
-                    ->send();
-                break;
-            case 'DELETE':
-                $response = $this->_client
-                    ->delete($this->_requestUrl.'?'.http_build_query((array)$this->_restObject))
-                    ->send();
-                break;
+        try
+        {
+            switch (strtoupper($this->_restObjectMethod)) {
+                case 'GET':
+                    $response = $this->_client
+                        ->get($this->_requestUrl . '?' . http_build_query((array)$this->_restObject))
+                        ->send();
+                    break;
+                case 'PUT':
+                    $postFields = (array)$this->_restObject;
+                    $response = $this->_client
+                        ->put($this->_requestUrl, null, $postFields)
+                        ->send();
+                    break;
+                case 'DELETE':
+                    $response = $this->_client
+                        ->delete($this->_requestUrl . '?' . http_build_query((array)$this->_restObject))
+                        ->send();
+                    break;
+            }
+            $this->_response = $response;
+        }catch(BadResponseException $e){
+                $this->_response = $e->getResponse();
+                echo $e->getResponse();
         }
-        $this->_response = $response;
     }
 
     public function isTheResponseAJsonObject()
@@ -121,19 +126,7 @@ class RequestContext
         if (empty($data)) {
             throw new Exception("Response was not JSON\n" . $this->_response);
         }
-    }
-
-    public function isPropertyPresentInResponse($propertyName)
-    {
-        $data = json_decode($this->_response->getBody(true));
-
-        if (!empty($data)) {
-            if (!isset($data->$propertyName)) {
-                throw new Exception("Property '".$propertyName."' is not set!\n");
-            }
-        } else {
-            throw new Exception("Response was not JSON\n" . $this->_response->getBody(true));
-        }
+        return true;
     }
 
     public function isPropertyEqualsTo($propertyName, $propertyValue)
@@ -145,20 +138,7 @@ class RequestContext
                 throw new Exception("Property '".$propertyName."' is not set!\n");
             }
             if ($data->$propertyName !== $propertyValue) {
-                throw new \Exception('Property value mismatch! (given: '.$propertyValue.', match: '.$data->$propertyName.')');
-            }
-        } else {
-            throw new Exception("Response was not JSON\n" . $this->_response->getBody(true));
-        }
-    }
-
-    public function isPropertyNameInResponse($propertyName)
-    {
-        $data = json_decode($this->_response->getBody(true));
-
-        if (!empty($data)) {
-            if (!isset($data->$propertyName)) {
-                throw new Exception("Property '".$propertyName."' is not set!\n");
+                return false;
             }
             return true;
         } else {
@@ -166,18 +146,35 @@ class RequestContext
         }
     }
 
-    public function checkPropertyType($propertyName,$typeString)
+    public function isPropertyNameInResponse($propertyName)
     {
-        $data = json_decode($this->_response->getBody(true));
+        $data = json_decode($this->_response->getBody(true), true);
 
         if (!empty($data)) {
-            if (!isset($data->$propertyName)) {
+            if (array_key_exists($propertyName, $data['data'])) {
+                return true;
+            }
+            else {
+                throw new Exception("Property '".$propertyName."' is not set!\n");
+            }
+        }
+        else {
+            throw new Exception("Response was not JSON\n" . $this->_response->getBody(true));
+        }
+    }
+
+    public function checkPropertyTypeInData($propertyName,$type)
+    {
+        $data = json_decode($this->_response->getBody(true), true);
+
+        if (!empty($data)) {
+            if (!array_key_exists($propertyName, $data['data'])) {
                 throw new Exception("Property '".$propertyName."' is not set!\n");
             }
             // check our type
-            switch (strtolower($typeString)) {
+            switch (strtolower($type)) {
                 case 'string':
-                    if (!is_string($data->$propertyName)) {
+                    if (!is_string($data['data'][$propertyName])) {
                         return false;
                     }
                     break;
@@ -196,9 +193,25 @@ class RequestContext
         }
     }
 
-    public function getResponseCodeStatus()
+    public function getResponseCodeStatusAndReason()
     {
-        return (string)$this->_response->getStatusCode();
+        return (string)$this->_response->getStatusCode().' '.$this->_response->getReasonPhrase();
+    }
+
+    public function getResponseErrorMessage()
+    {
+        $data = json_decode($this->_response->getBody(true), true);
+        if(!empty($data))
+        {
+            if(array_key_exists('error_message', $data['meta']))
+            {
+                return $data['meta']['error_message'];
+            }
+        }
+        else
+        {
+            throw new Exception("Response was not JSON\n");
+        }
     }
 
     public function echoLastResponse()

@@ -6,11 +6,11 @@ require_once 'RequestContext.php';
 
 class StepsContext extends BehatContext
 {
-    private $_requests_manager = null;
+    private $_requests_manager;
 
     public function __construct(array $parameters)
     {
-        $this->$_requests_manager = new RequestContext($parameters);
+        $this->_requests_manager = new RequestContext($parameters);
     }
 
     /**
@@ -18,7 +18,7 @@ class StepsContext extends BehatContext
      */
     public function addEntityInSonar($entity_name)
     {
-        $this->$_requests_manager->addAnEntityByName($entity_name);
+        $this->_requests_manager->addAnEntityByName($entity_name);
     }
 
     /**
@@ -26,7 +26,7 @@ class StepsContext extends BehatContext
      */
     public function theProviderNameIs($provider_name)
     {
-        $this->$_requests_manager->addProviderToPathUrl($provider_name);
+        $this->_requests_manager->addProviderToPathUrl($provider_name);
     }
 
     /**
@@ -37,7 +37,7 @@ class StepsContext extends BehatContext
      */
     public function iPerformARequestWithTheProviderId($providerPlaceId)
     {
-        $this->$_requests_manager->executeProviderRequest($providerPlaceId);
+        $this->_requests_manager->executeProviderRequest($providerPlaceId);
     }
 
     /**
@@ -45,8 +45,8 @@ class StepsContext extends BehatContext
      */
     public function iGetAResponseStatusCode($response_code)
     {
-        $actual_response = $this->$_requests_manager->getResponseCodeStatus();
-        assertEquals($response_code, $actual_response,
+        $actual_response = $this->_requests_manager->getResponseCodeStatusAndReason();
+        PHPUnit_Framework_Assert::assertEquals($response_code, $actual_response,
             "The response is not the same, should be ".$response_code." but is ".$actual_response);
     }
 
@@ -56,7 +56,7 @@ class StepsContext extends BehatContext
      */
     public function theResponseHasAnProperty($property_name)
     {
-        assertThat($this->$_requests_manager->isPropertyNameInResponse($property_name),
+        PHPUnit_Framework_Assert::assertTrue($this->_requests_manager->isPropertyNameInResponse($property_name),
             "The property name ".$property_name." is not present in the response");
     }
 
@@ -65,7 +65,7 @@ class StepsContext extends BehatContext
      */
     public function thePropertyIsAType($property_name, $type)
     {
-        assertThat($this->$_requests_manager->checkPropertyType($property_name, $type),
+        PHPUnit_Framework_Assert::assertTrue($this->_requests_manager->checkPropertyTypeInData($property_name, $type),
             "The property name ".$property_name." is not ".$type." type");
     }
 
@@ -74,8 +74,8 @@ class StepsContext extends BehatContext
      */
     public function theErrorMessageReturnedShouldBe($response_code)
     {
-        $actual_response = $this->_requests_manager->getResponseCodeStatus();
-        assertEquals($response_code, $actual_response,
+        $actual_response = $this->_requests_manager->getResponseErrorMessage();
+        PHPUnit_Framework_Assert::assertEquals($response_code, $actual_response,
             "The response code is incorrect. It should be ".$response_code." but is ".$actual_response);
     }
 
@@ -84,7 +84,7 @@ class StepsContext extends BehatContext
      */
     public function iPerformARequestWithoutSpecifyingAProviderId()
     {
-        $this->$_requests_manager->executeProviderRequest("");
+        $this->_requests_manager->executeProviderRequest("");
     }
 
     /**
@@ -92,7 +92,7 @@ class StepsContext extends BehatContext
      */
     public function iWantToFindA($entityName)
     {
-        $this->$_requests_manager->getAnEntityByName($entityName);
+        $this->_requests_manager->getAnEntityByName($entityName);
     }
 
     /**
@@ -100,7 +100,7 @@ class StepsContext extends BehatContext
      */
     public function iWantToRemoveAInSonar($entityName)
     {
-        $this->$_requests_manager->removeAnEntityByName($entityName);
+        $this->_requests_manager->removeAnEntityByName($entityName);
     }
 
     /**
@@ -117,6 +117,15 @@ class StepsContext extends BehatContext
     public function thePropertyInTheResponseIsTheSameAs($arg1, $arg2)
     {
         throw new PendingException();
+    }
+
+    /**
+     * @Then /^the response is a JSON object$/
+     */
+    public function theResponseIsAJSONObject()
+    {
+        PHPUnit_Framework_Assert::assertTrue($this->_requests_manager->isTheResponseAJsonObject(),
+            "The response is not a JSON object");
     }
 
 }
