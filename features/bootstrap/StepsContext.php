@@ -128,4 +128,24 @@ class StepsContext extends BehatContext
             "The response is not a JSON object");
     }
 
+    /**
+     * @Given /^the error message returned should contain the message "([^"]*)"$/
+     */
+    public function theErrorMessageReturnedShouldContainTheMessage($response_code)
+    {
+        $actual_response = $this->_requests_manager->getResponseErrorMessage();
+        PHPUnit_Framework_Assert::assertContains($response_code, $actual_response,
+            "The response code is incorrect. It should be ".$response_code." but is ".$actual_response);
+    }
+
+    /**
+     * @Given /^the "([^"]*)" property's value is "([^"]*)"$/
+     */
+    public function thePropertySValueIs($propertyName, $propertyValue)
+    {
+        $actual_response = $this->_requests_manager->getPropertyValueByPropertyName($propertyName);
+        PHPUnit_Framework_Assert::assertEquals($propertyValue, $actual_response,
+            "The property value is incorrect. It should be ".$propertyValue." but it is ".$actual_response);
+    }
+
 }

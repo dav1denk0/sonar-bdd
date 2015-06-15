@@ -115,7 +115,6 @@ class RequestContext
             $this->_response = $response;
         }catch(BadResponseException $e){
                 $this->_response = $e->getResponse();
-                echo $e->getResponse();
         }
     }
 
@@ -129,19 +128,18 @@ class RequestContext
         return true;
     }
 
-    public function isPropertyEqualsTo($propertyName, $propertyValue)
+    public function getPropertyValueByPropertyName($propertyName)
     {
-        $data = json_decode($this->_response->getBody(true));
+        $data = json_decode($this->_response->getBody(true), true);
 
         if (!empty($data)) {
-            if (!isset($data->$propertyName)) {
-                throw new Exception("Property '".$propertyName."' is not set!\n");
+            if(array_key_exists($propertyName, $data['data'])) {
+                return $data['data'][$propertyName];
             }
-            if ($data->$propertyName !== $propertyValue) {
-                return false;
-            }
-            return true;
-        } else {
+            throw new Exception("Property '".$propertyName."' is not set!\n");
+        }
+        else
+        {
             throw new Exception("Response was not JSON\n" . $this->_response->getBody(true));
         }
     }
