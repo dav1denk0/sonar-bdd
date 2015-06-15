@@ -15,6 +15,7 @@ class StepsContext extends BehatContext
 
     /**
      * @Given /^I want to add a new "([^"]*)" in sonar$/
+     * @Given /^I want to update a "([^"]*)" in sonar$/
      */
     public function addEntityInSonar($entity_name)
     {
@@ -31,6 +32,7 @@ class StepsContext extends BehatContext
 
     /**
      * @When /^I perform a request with the provider id "([^"]*)" to add the place$/
+     * @Given /^I perform a request with the provider id "([^"]*)" to update the place$/
      * @When /^I perform a request with the provider id "([^"]*)" to get the place's information$/
      * @When /^I perform a request with the provider id "([^"]*)" to delete the place$/
      *
@@ -104,19 +106,12 @@ class StepsContext extends BehatContext
     }
 
     /**
-     * @When /^I perform a request with the UUID "([^"]*)" to get the place's information$/
+     * @When /^I perform a request with the UUID to get the place's information$/
      */
-    public function iPerformARequestWithTheUUIDToGetThePlaceSInformation($sonarPlaceId)
+    public function iPerformARequestWithTheUUIDToGetThePlaceSInformation()
     {
-        $this->_requests_manager->executeUuidRequest($sonarPlaceId);
-    }
-
-    /**
-     * @Given /^the "([^"]*)" property in the response is the same as "([^"]*)"$/
-     */
-    public function thePropertyInTheResponseIsTheSameAs($arg1, $arg2)
-    {
-        throw new PendingException();
+        $uuidValue = $this->_requests_manager->getPropertyValueByPropertyName('id');
+        $this->_requests_manager->executeUuidRequest($uuidValue);
     }
 
     /**
@@ -148,4 +143,19 @@ class StepsContext extends BehatContext
             "The property value is incorrect. It should be ".$propertyValue." but it is ".$actual_response);
     }
 
+    /**
+     * @When /^I want to get a registered place in \'([^\']*)\' by UUID$/
+     */
+    public function iWantToGetARegisteredPlaceInByUUID($providerName)
+    {
+        $this->_requests_manager->addProviderToPathUrl($providerName);
+    }
+
+    /**
+     * @Given /^I perform a request without specifying the UUID$/
+     */
+    public function iPerformARequestWithoutSpecifyingTheUUID()
+    {
+        $this->_requests_manager->executeUuidRequest("");
+    }
 }

@@ -63,9 +63,11 @@ class RequestContext
             case 'FOURSQUARE':
                 $this->_pathUrl = $this->getParameter('foursquare_provider_url');
                 break;
-            case 'SONAR':
+            case 'SONAR': {
+                $this->getAnEntityByName("");
                 $this->_pathUrl = $this->getParameter('sonar_uuid_url');
                 break;
+            }
             default:
                 $this->_pathUrl = "/".$provider_name."/";
         }
@@ -142,6 +144,19 @@ class RequestContext
         {
             throw new Exception("Response was not JSON\n" . $this->_response->getBody(true));
         }
+    }
+
+    public function getUuidFromResponse()
+    {
+        $data = json_decode($this->_response->getBody(true), true);
+
+        if(!empty($data)) {
+            if(array_key_exists('id', $data['data']['source'])) {
+                return $data['data']['source']['id'];
+            }
+            throw new Exception("Property 'id' is not set!\n");
+        }
+        throw new Exception("Response was not JSON\n" . $this->_response->getBody(true));
     }
 
     public function isPropertyNameInResponse($propertyName)
