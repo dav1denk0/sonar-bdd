@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" skipped="0" name="Get registered places in Sonar by Sonar place id (UUID)" tests="10" time="2.339813">
+    <testcase classname="Get registered places in Sonar by Sonar place id (UUID)" name="Get a registered place by UUID in Facebook" time="0.768991" assertions="13">
+    </testcase>
+    <testcase classname="Get registered places in Sonar by Sonar place id (UUID)" name="Get a registered place by UUID in Foursquare" time="0.751070" assertions="13">
+    </testcase>
+    <testcase classname="Get registered places in Sonar by Sonar place id (UUID)" name="Attempt to get a place in Facebook with a wrong UUID" time="0.818776" assertions="12">
+    </testcase>
+</testsuite>

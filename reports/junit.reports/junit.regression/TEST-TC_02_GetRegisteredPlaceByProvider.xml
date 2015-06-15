@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" skipped="0" name="Get places in Sonar by provider id" tests="7" time="1.143084">
+    <testcase classname="Get places in Sonar by provider id" name="Get a registered place in Facebook" time="0.404557" assertions="11">
+    </testcase>
+    <testcase classname="Get places in Sonar by provider id" name="Get a registered place in Foursquare" time="0.370784" assertions="10">
+    </testcase>
+    <testcase classname="Get places in Sonar by provider id" name="Attempt to get a registered place in Twitter" time="0.366864" assertions="6">
+    </testcase>
+</testsuite>

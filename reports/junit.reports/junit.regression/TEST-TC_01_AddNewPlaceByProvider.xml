@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" skipped="0" name="Add a new place in Sonar" tests="4" time="2.182199">
+    <testcase classname="Add a new place in Sonar" name="Add new place in Facebook" time="0.720023" assertions="7">
+    </testcase>
+    <testcase classname="Add a new place in Sonar" name="Add new place in Foursquare" time="0.685789" assertions="7">
+    </testcase>
+    <testcase classname="Add a new place in Sonar" name="Attempt to add new place in Twitter" time="0.379042" assertions="6">
+    </testcase>
+    <testcase classname="Add a new place in Sonar" name="Attempt to add new place in Facebook without provider id" time="0.395431" assertions="6">
+    </testcase>
+</testsuite>

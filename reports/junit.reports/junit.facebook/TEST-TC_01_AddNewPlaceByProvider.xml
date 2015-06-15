@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" skipped="0" name="Add a new place in Sonar" tests="1" time="0.718154">
+    <testcase classname="Add a new place in Sonar" name="Add new place in Facebook" time="0.717076" assertions="7">
+    </testcase>
+</testsuite>

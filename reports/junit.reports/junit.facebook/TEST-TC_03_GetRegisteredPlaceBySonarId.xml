@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" skipped="0" name="Get registered places in Sonar by Sonar place id (UUID)" tests="3" time="0.738701">
+    <testcase classname="Get registered places in Sonar by Sonar place id (UUID)" name="Get a registered place by UUID in Facebook" time="0.738348" assertions="13">
+    </testcase>
+</testsuite>

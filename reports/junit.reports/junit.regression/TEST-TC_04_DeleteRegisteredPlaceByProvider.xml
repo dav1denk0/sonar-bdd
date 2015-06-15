@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="2" skipped="0" name="Delete a registered place in Sonar and all it's associations" tests="15" time="2.017746">
+    <testcase classname="Delete a registered place in Sonar and all it's associations" name="Delete a stored place in Facebook" time="0.385894" assertions="5">
+    </testcase>
+    <testcase classname="Delete a registered place in Sonar and all it's associations" name="Attempt to get a deleted place in Facebook" time="0.378879" assertions="6">
+        <failure message="The response is not the same, should be 404 Not Found but is 200 OK
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'404 Not Found'
++'200 OK'" type="failed"><![CDATA[
+The response is not the same, should be 404 Not Found but is 200 OK
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'404 Not Found'
++'200 OK'
+
+C:\php-projects\sonar-bdd\features\bootstrap\StepsContext.php:52
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Definition\Annotation\Definition.php:155
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\StepTester.php:157
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\StepTester.php:126
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\StepTester.php:95
+C:\php-projects\sonar-bdd\vendor\behat\gherkin\src\Behat\Gherkin\Node\AbstractNode.php:42
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\ScenarioTester.php:148
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\ScenarioTester.php:87
+C:\php-projects\sonar-bdd\vendor\behat\gherkin\src\Behat\Gherkin\Node\AbstractNode.php:42
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\FeatureTester.php:88
+C:\php-projects\sonar-bdd\vendor\behat\gherkin\src\Behat\Gherkin\Node\AbstractNode.php:42
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Console\Command\BehatCommand.php:150
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Console\Command\BehatCommand.php:128
+C:\php-projects\sonar-bdd\vendor\symfony\console\Symfony\Component\Console\Command\Command.php:257
+C:\php-projects\sonar-bdd\vendor\symfony\console\Symfony\Component\Console\Application.php:874
+C:\php-projects\sonar-bdd\vendor\symfony\console\Symfony\Component\Console\Application.php:195
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Console\BehatApplication.php:68
+C:\php-projects\sonar-bdd\vendor\symfony\console\Symfony\Component\Console\Application.php:126
+
+]]></failure>
+    </testcase>
+    <testcase classname="Delete a registered place in Sonar and all it's associations" name="Delete a stored place in Foursquare" time="0.383680" assertions="5">
+    </testcase>
+    <testcase classname="Delete a registered place in Sonar and all it's associations" name="Attempt to get a deleted place in Foursquare" time="0.438848" assertions="6">
+        <failure message="The response is not the same, should be 404 Not Found but is 200 OK
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'404 Not Found'
++'200 OK'" type="failed"><![CDATA[
+The response is not the same, should be 404 Not Found but is 200 OK
+Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'404 Not Found'
++'200 OK'
+
+C:\php-projects\sonar-bdd\features\bootstrap\StepsContext.php:52
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Definition\Annotation\Definition.php:155
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\StepTester.php:157
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\StepTester.php:126
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\StepTester.php:95
+C:\php-projects\sonar-bdd\vendor\behat\gherkin\src\Behat\Gherkin\Node\AbstractNode.php:42
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\ScenarioTester.php:148
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\ScenarioTester.php:87
+C:\php-projects\sonar-bdd\vendor\behat\gherkin\src\Behat\Gherkin\Node\AbstractNode.php:42
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Tester\FeatureTester.php:88
+C:\php-projects\sonar-bdd\vendor\behat\gherkin\src\Behat\Gherkin\Node\AbstractNode.php:42
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Console\Command\BehatCommand.php:150
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Console\Command\BehatCommand.php:128
+C:\php-projects\sonar-bdd\vendor\symfony\console\Symfony\Component\Console\Command\Command.php:257
+C:\php-projects\sonar-bdd\vendor\symfony\console\Symfony\Component\Console\Application.php:874
+C:\php-projects\sonar-bdd\vendor\symfony\console\Symfony\Component\Console\Application.php:195
+C:\php-projects\sonar-bdd\vendor\behat\behat\src\Behat\Behat\Console\BehatApplication.php:68
+C:\php-projects\sonar-bdd\vendor\symfony\console\Symfony\Component\Console\Application.php:126
+
+]]></failure>
+    </testcase>
+    <testcase classname="Delete a registered place in Sonar and all it's associations" name="Attempt to delete a place in Facebook without provider id" time="0.401288" assertions="6">
+    </testcase>
+</testsuite>
